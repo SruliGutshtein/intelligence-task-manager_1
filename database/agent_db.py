@@ -8,7 +8,7 @@ class AgentDB:
         """Accepts a dictionary and creates a new agent
         and returns the agent object"""
         
-        sql = """INSERT INTO Intelligence_db (name, specialty, is_active, agent_rank)
+        sql = """INSERT INTO agents (name, specialty, is_active, agent_rank)
             VALUES (%s, %s, %s)"""
         values = (data["name"], data["specialty"], data["agent_rank"])
         with dbc().get_connection() as conn:
@@ -23,7 +23,7 @@ class AgentDB:
         """Returns a list of all agents"""
         with dbc().get_connection() as conn:
             with conn.cursor(dictionary=True) as cursor:
-                cursor.execute("SELECT * FROM Intelligence_db")
+                cursor.execute("SELECT * FROM agents")
                 agents = cursor.fetchall()
         return agents
         
@@ -33,7 +33,7 @@ class AgentDB:
         """Returns one agent by ID, or None if not exist"""
         with dbc().get_connection() as conn:
             with conn.cursor(dictionary=True) as cursor:
-                cursor.execute("SELECT * FROM Intelligence_db WHERE id = %s", (id,))
+                cursor.execute("SELECT * FROM agents WHERE id = %s", (id,))
                 agent = cursor.fetchone()
         return agent
 
@@ -69,7 +69,7 @@ class AgentDB:
             with conn.cursor(dictionary=True) as cursor:
                 sql = """SELECT COUNT(*) AS completed
                         FROM missions WHERE assigned_agent_id = %s
-                        AND WHERE status = COMPLETED"""
+                        AND WHERE status = 'COMPLETED'"""
                 cursor.execute(sql, (id,))
                 completed = cursor.fetchone()["completed"]
                 updated = self.update_member(id, {"completed_missions": completed})
@@ -83,7 +83,7 @@ class AgentDB:
             with conn.cursor(dictionary=True) as cursor:
                 sql = """SELECT COUNT(*) AS failed
                         FROM missions WHERE assigned_agent_id = %s
-                        AND WHERE status = FAILED"""
+                        AND WHERE status = 'FAILED'"""
                 cursor.execute(sql, (id,))
                 failed = cursor.fetchone()["failed"]
                 updated = self.update_member(id, {"failed_missions": failed})
