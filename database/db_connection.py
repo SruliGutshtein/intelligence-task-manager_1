@@ -36,8 +36,8 @@ class DBConnection:
             title VARCHAR(50) NOT NULL,
             description TEXT NOT NULL,
             location VARCHAR(100) NOT NULL,
-            difficulty INT,
-            importance INT,
+            difficulty INT CHECK(difficulty BETWEEN 1 AND 10),
+            importance INT CHECK(importance BETWEEN 1 AND 10),
             status VARCHAR(12) DEFAULT "NEW",
             risk_level VARCHAR(9) NOT NULL,
             assigned_agent_id INT DEFAULT NULL
@@ -49,3 +49,5 @@ class DBConnection:
                 cursor.execute(missions_table)
                 conn.commit()
                 
+
+    
