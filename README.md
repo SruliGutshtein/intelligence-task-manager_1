@@ -1,6 +1,6 @@
 # Intelligence-Task-Manager
 
-## Agent and task management system connected to a MySQL database
+## Agent and task management system built on a FastAPI server connected to a MySQL database
 
 <br> <br>
 
@@ -8,13 +8,19 @@
 ## Folder structure
 ```
 intelligence-task-manager/
+├── main.py
 ├── database/
 │   ├── db_connection.py
 │   ├── agent_db.py
 │   └── mission_db.py
+├── routes/
+│ ├── agent_routes.py
+│ ├── mission_routes.py
+│ └── report_routes.py
+├── logs/
+│ └── app.log
 ├── README.md
-├── requirements.txt
-└── .gitignore
+└──  requirements.txt
 ```
 
 <br>
@@ -128,6 +134,57 @@ Responsible for all SQL operations against the agents table
 
 <br><br>
 
+## Endpoints
+
+### Agents endpoints
+
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | /agents | Create new agent |
+| `GET` | /agents | All agents |
+| `GET` | /agents/{id} | Agent ID by |
+| `PUT` | /agents/{id} | Update agent |
+| `PUT` | /agents/{id}/deactivate | Deactivate agent |
+| `GET` | /agents/{id}/performance | Agent performance |
+
+
+### Missions endpoints
+
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | /missions | Create a mission |
+| `GET` | /missions | All missions |
+| `GET` | /missions/{id} | mission ID by |
+| `PUT` | /missions/{id}/assign/{agent_id} | Assign to agent
+| `PUT` | /missions/{id}/start | Start a mission |
+| `PUT` | /missions/{id}/complete | Complete successfully |
+| `PUT` | /missions/{id}/fail | Complete with failure |
+| `PUT` | /missions/{id}/cancel | Cancel a mission |
+
+### Reports endpoints
+
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | /reports/summary | System General Report |
+| `GET` | /reports/missions-by-status | Missions by Status |
+| `GET` | /reports/top-agent | get_top_agent |
+
+<br><br>
+
+## System flow
+
+The client sends HTTP requests to the FastApi server and each endpoint redirects to the appropriate function that checks that its request is approved and if so creates or updates or gets data from the MYSQL database.
+
+<br><br>
+
+## Running FastAPI
+
+* swagger-UI. You can run the address: http://localhost:8000/docs to activate all endpoints in a convenient and easy interface
+
+<br><br>
+
+
+
 ## Running instructions
 
 ### Running MySQL with Docker
@@ -160,3 +217,6 @@ pip install -r requirements.txt
 cd <where the project is>/intelligence-task-manager
 python main.py
 ```
+## Running FastAPI
+
+* swagger-UI. You can run the address: http://localhost:8000/docs to activate all endpoints in a convenient and easy interface.
