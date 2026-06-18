@@ -4,19 +4,20 @@ import mysql.connector
 class DBConnection:
     def get_connection(self):
         return mysql.connector.connect(
-            host = "localhost",
-            port = 3306,
+            host="localhost",
+            port=3306,
             user="root",
             password="1234",
-            database="Intelligence_db"
+            database="Intelligence_db",
         )
-        
+
     def create_database(self):
-        with self.get_connection() as conn:
-            with conn.cursor() as cursor:
-                cursor.execute("CREATE DATABASE IF NOT EXISTS Intelligence_db")
-                conn.commit()
-                
+        conn = mysql.connector.connect(
+            host="localhost", port=3306, user="root", password="1234"
+        )
+        with conn.cursor() as cursor:
+            cursor.execute("CREATE DATABASE IF NOT EXISTS Intelligence_db")
+            conn.commit()
 
     def create_tables(self):
         agents_table = """
@@ -38,8 +39,8 @@ class DBConnection:
             location VARCHAR(100) NOT NULL,
             difficulty INT CHECK(difficulty BETWEEN 1 AND 10),
             importance INT CHECK(importance BETWEEN 1 AND 10),
-            status VARCHAR(12) DEFAULT "NEW",
-            risk_level VARCHAR(9) NOT NULL,
+            status ENUM("NEW", "ASSIGNED", "IN_PROGRESS", "COMPLETED", "FAILED", "CANCELLED") DEFAULT "NEW",
+            risk_level VARCHAR(20) NOT NULL,
             assigned_agent_id INT DEFAULT NULL
         )
         """
@@ -48,6 +49,3 @@ class DBConnection:
                 cursor.execute(agents_table)
                 cursor.execute(missions_table)
                 conn.commit()
-                
-
-    
