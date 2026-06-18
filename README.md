@@ -126,7 +126,7 @@ Responsible for all SQL operations against the agents table
 * `9` Only a task with the status IN_PROGRESS can be finished and changed to failed or completed.
 * `10` Only a task with the status NEW or ASSIGNED can be canceled — otherwise an error.
 
-<br>
+<br><br>
 
 ## Running instructions
 
